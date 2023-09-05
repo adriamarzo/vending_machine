@@ -82,6 +82,10 @@ class OrderView(APIView):
             Order.objects.create(user=user, product=product, slot=slot)
             slot.quantity -= 1
             slot.save()
+
+            user.credit -= product.price
+            user.save()
+
             return Response(status=status.HTTP_204_NO_CONTENT)
         except NotEnoughCreditException as e:
             return Response(status=status.HTTP_400_BAD_REQUEST, data={"error": e})

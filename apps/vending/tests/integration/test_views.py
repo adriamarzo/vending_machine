@@ -207,8 +207,11 @@ class TestOrder:
                 "slot_id": slots_grid[3].id,
             },
         )
+        slots_grid[3].refresh_from_db()
+        assert slots_grid[3].quantity == 2
 
-        slots_grid[3].quantity == 2
+        user.refresh_from_db()
+        assert user.credit == Decimal("89.60")
 
         assert response.status_code == status.HTTP_204_NO_CONTENT
 
